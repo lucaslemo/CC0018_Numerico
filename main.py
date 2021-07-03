@@ -4,29 +4,33 @@ DELTA = np.float64(2**-53)
 
 
 def testa_onde(p, q, r):
-    mat = np.array([p, q, r])
+    l1 = [np.float64(1)]
+    l2 = [np.float64(1)]
+    l3 = [np.float64(1)]
+    l1.extend(p)
+    l2.extend(q)
+    l3.extend(r)
+    mat = np.array([l1, l2, l3])
     det = np.linalg.det(mat)
-    print(det)
     return np.sign(det)
 
 
 def main():
     global DELTA
-    o = [np.float64(1), np.float64(0), DELTA*17]
-    p = (np.float64(1), np.float64(12), np.float64(12))
-    q = (np.float64(1), np.float64(24), np.float64(24))
+    o = [np.float64(0), DELTA*17]
+    p = [np.float64(12), np.float64(12)]
+    q = [np.float64(24), np.float64(24)]
     r = o
-    count = 0
-    while r[1] <= DELTA*34:
-        valida = testa_onde(p, q, r)
-        # print(valida, count, r)
-        r[1] += DELTA
-        count += 1
-        '''if valida == 1:
-            pass
+    while r[0] <= 34*DELTA:
+        print("({} | {})".format(r[0]/DELTA, r[1]/DELTA))
+        if testa_onde(p, q, [r[0] + DELTA, r[1]]) > 0:
+            print("Rota 01")
+            r[1] -= DELTA
+            r[0] += DELTA
         else:
-            print("O robo colidiu com a parede!")
-            break'''
+            print("Rota 02")
+            r[1] += DELTA
+            r[0] += DELTA
 
 
 if __name__ == '__main__':
